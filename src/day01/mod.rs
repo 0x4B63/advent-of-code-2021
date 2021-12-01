@@ -1,6 +1,4 @@
-#![allow(dead_code)]
-use std::{io, num};
-use std::{fs::File, io::{BufReader, BufRead}, fmt::Debug};
+use std::{io, num, fs::File, io::{BufReader, BufRead}, fmt::Debug};
 
 #[derive(Debug)]
 pub enum AdventError {
