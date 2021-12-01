@@ -6,11 +6,13 @@ pub enum AdventError {
     Parse(num::ParseIntError),
 }
 
+#[allow(unused_assignments)]
 pub fn solve_part1(inputfile: &str) -> Result<usize, AdventError> {
     let file = File::open(inputfile).map_err(AdventError::Io)?;
     let mut reader = BufReader::new(file);
     let mut line = String::new();
     let mut prev: usize = 0;
+    let mut curr: usize = 0;
     let mut output: usize = 0;
 
     loop {
@@ -19,11 +21,11 @@ pub fn solve_part1(inputfile: &str) -> Result<usize, AdventError> {
                 if count == 0 {
                     break;
                 }
-                let parsed = line.trim().parse::<usize>().map_err(AdventError::Parse)?;
-                if prev < parsed {
+                curr = line.trim().parse::<usize>().map_err(AdventError::Parse)?;
+                if prev < curr {
                     output += 1;
                 }
-                prev = parsed;
+                prev = curr;
                 line.clear();
             },
             Err(err) => {
