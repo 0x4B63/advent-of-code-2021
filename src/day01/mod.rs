@@ -10,9 +10,11 @@ pub fn solve_part1(inputfile: &str) -> Result<usize, AdventError> {
     let file = File::open(inputfile).map_err(AdventError::Io)?;
     let mut reader = BufReader::new(file);
     let mut line = String::new();
-    let mut prev: usize = 0;
+    reader.read_line(&mut line).map_err(AdventError::Io)?;
+    let mut prev: usize = line.trim().parse::<usize>().map_err(AdventError::Parse)?;
+    line.clear();
     let mut output: usize = 0;
-
+    
     loop {
         match reader.read_line(&mut line) {
             Ok(count) => {
@@ -31,7 +33,7 @@ pub fn solve_part1(inputfile: &str) -> Result<usize, AdventError> {
             }
         }
     }
-    Ok(output - 1)
+    Ok(output)
 }
 
 
