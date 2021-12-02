@@ -1,4 +1,5 @@
 use std::{io::{self, BufReader, BufRead}, num, fs::File};
+extern crate test;
 
 #[derive(Debug)]
 pub enum AdventError {
@@ -81,4 +82,22 @@ pub fn solve_part2(inputfile: &str) -> Result<usize, AdventError> {
         }
     }
     Ok(x * y)
+}
+
+#[bench]
+fn bench_part1(bench: &mut test::Bencher) {
+    bench.iter(|| {
+        let cwd = std::env::current_dir().unwrap();
+        let path = format!("{}{}", cwd.display(), "/src/day02/input.txt");
+        let _ = solve_part1(&path);
+    });
+}
+
+#[bench]
+fn bench_part2(bench: &mut test::Bencher) {
+    bench.iter(|| {
+        let cwd = std::env::current_dir().unwrap();
+        let path = format!("{}{}", cwd.display(), "/src/day02/input.txt");
+        let _ = solve_part2(&path);
+    });
 }
