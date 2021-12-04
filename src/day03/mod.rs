@@ -1,62 +1,35 @@
-use std::{fs::File, io::{BufReader, BufRead}, io::{self, Seek}};
+use std::{fs::File, io::{self, BufReader, BufRead}};
 
 #[derive(Debug)]
 pub enum AdventError {
     Io(io::Error),
 }
 
-// Note: This solution is pretty janky. Refactor later.
-
 pub fn solve_part1(inputfile: &str) -> Result<usize, AdventError> {
-    let file = File::open(inputfile).map_err(AdventError::Io)?;
-    let mut reader = BufReader::new(file);
-    let mut line = String::new();
-    let mut lcount = 0;
-    let length = reader.read_line(&mut line).map_err(AdventError::Io)?;
-    let mut store: Vec<usize> = std::iter::repeat(0).take(length - 1).collect();
-    line.clear();
-    reader.seek(io::SeekFrom::Start(0)).map_err(AdventError::Io)?;
+    let input = load(inputfile).unwrap();
+    let len = input[0].len() - 1;
+    let half_count = input.len() / 2;
+    let mut store: Vec<usize> = std::iter::repeat(0).take(len).collect();
 
-    loop {
-        match reader.read_line(&mut line) {
-            Ok(count) => {
-                if count == 0 {
-                    break;
-                }
-
-                for (i, c) in line.chars().enumerate() {
-                    match c {
-                        '1' => {
-                            store[i] += 1;
-                        },
-                        _ => {}
-                    }
-                }
-
-                lcount += 1;
-                line.clear();
-            },
-            Err(err) => {
-                return Err(AdventError::Io(err));
+    for line in input {
+        for (i, c) in line.chars().enumerate() {
+            match c {
+                '1' => {
+                    store[i] += 1;
+                },
+                _ => {}
             }
         }
     }
-    let mut a = String::new();
-    let mut b = String::new();
-    for i in 0..store.len() {
-        if store[i] > lcount / 2 {
-            a += "1";
-            b += "0";
-        } else {
-            a += "0";
-            b += "1";
-        }
-    }
-    let out_a = usize::from_str_radix(&a, 2).unwrap();
-    let out_b = usize::from_str_radix(&b, 2).unwrap();
-    Ok(out_a * out_b)
+
+    let gamma: String = store.iter().fold(String::new(), |acc, x| if x > &(&half_count){acc + "1"} else {acc + "0"});
+    let epsilon: String = store.iter().fold(String::new(), |acc, x| if x > &(&half_count){acc + "0"} else {acc + "1"});
+    let gamma = usize::from_str_radix(&gamma, 2).unwrap();
+    let epsilon = usize::from_str_radix(&epsilon, 2).unwrap();
+    Ok(gamma * epsilon)
 }
 
+// Note: This solution is pretty janky. Refactor later.
 pub fn solve_part2(inputfile: &str) -> Result<usize, AdventError> {
     let mut input = load(inputfile).unwrap();
     let mut input2 = input.clone();
@@ -67,6 +40,9 @@ pub fn solve_part2(inputfile: &str) -> Result<usize, AdventError> {
     for i in 0..length {
         pattern += bitstuff(&input, i);
         input = reduce(input, &pattern);
+        if input.len() == 1 {
+            break;
+        }
     }
 
     for i in 0..length2 {
