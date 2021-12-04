@@ -1,6 +1,7 @@
 #![feature(test)]
 mod day01;
 mod day02;
+mod day03;
 
 fn main() {
     let cwd = std::env::current_dir().unwrap();
@@ -12,4 +13,9 @@ fn main() {
     let path = format!("{}{}", cwd.display(), "/src/day02/input.txt");
     println!("Day 02 (A): {}", day02::solve_part1(&path).unwrap());
     println!("Day 02 (B): {}", day02::solve_part2(&path).unwrap());
+
+    let path = format!("{}{}", cwd.display(), "/src/day03/input.txt");
+    println!("Day 03 (A): {}", day03::solve_part1(&path).unwrap());
+    println!("Day 03 (B): {}", day03::solve_part2(&path).unwrap());
+
 }
