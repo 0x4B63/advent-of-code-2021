@@ -22,8 +22,10 @@ pub fn solve_part1(inputfile: &str) -> Result<usize, AdventError> {
         }
     }
 
-    let gamma: String = store.iter().fold(String::new(), |acc, x| if x > &(&half_count){acc + "1"} else {acc + "0"});
-    let epsilon: String = store.iter().fold(String::new(), |acc, x| if x > &(&half_count){acc + "0"} else {acc + "1"});
+    let gamma: String = store.iter().fold(String::new(), |acc, x|
+        if x > &(&half_count){acc + "1"} else {acc + "0"});
+    let epsilon: String = store.iter().fold(String::new(), |acc, x|
+        if x > &(&half_count){acc + "0"} else {acc + "1"});
     let gamma = usize::from_str_radix(&gamma, 2).unwrap();
     let epsilon = usize::from_str_radix(&epsilon, 2).unwrap();
     Ok(gamma * epsilon)
@@ -91,11 +93,8 @@ fn bitstuff(input: &Vec<String>, pos: usize) -> &str {
             b += 1;
         }
     }
-    if a >= b {
-        return "1";
-    } else {
-        return "0";
-    }
+    if a >= b { return "1"; }
+    "0"
 }
 
 fn bitstuff_inverse(input: &Vec<String>, pos: usize) -> &str {
@@ -108,11 +107,8 @@ fn bitstuff_inverse(input: &Vec<String>, pos: usize) -> &str {
             b += 1;
         }
     }
-    if a <= b {
-        return "0";
-    } else {
-        return "1";
-    }
+    if a <= b { return "0"; }
+    "1"
 }
 
 fn reduce(input: Vec<String>, pattern: &str) -> Vec<String> {
