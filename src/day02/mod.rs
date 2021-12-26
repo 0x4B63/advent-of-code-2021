@@ -1,84 +1,59 @@
-use std::{io::{self, BufReader, BufRead}, num, fs::File};
+
+use crate::util::load;
 extern crate test;
 
 #[derive(Debug)]
 pub enum AdventError {
-    Io(io::Error),
-    Parse(num::ParseIntError),
+    Io(std::io::Error),
+    Parse(std::num::ParseIntError),
 }
 
 pub fn solve_part1(inputfile: &str) -> Result<usize, AdventError> {
-    let file = File::open(inputfile).map_err(AdventError::Io)?;
-    let mut reader = BufReader::new(file);
-    let mut line = String::new();
+    let input = load(inputfile).map_err(AdventError::Io)?;
     let (mut x,mut y) = (0,0);
 
-    loop {
-        match reader.read_line(&mut line) {
-            Ok(count) => {
-                if count == 0 {
-                    break;
-                }
-                let cmds: Vec<&str> = line.split(' ').collect();
-                let cmd = cmds[0];
-                let dist = cmds[1].trim().parse::<usize>().map_err(AdventError::Parse)?;
+    for line in input {
+        let cmds: Vec<&str> = line.split(' ').collect();
+        let cmd = cmds[0];
+        let dist = cmds[1].trim().parse::<usize>().map_err(AdventError::Parse)?;
 
-                match (cmd, dist) {
-                    ("forward", dist) => {
-                        x += dist;
-                    },
-                    ("up", dist) => {
-                        y -= dist;
-                    },
-                    ("down", dist) => {
-                        y += dist;
-                    },
-                    (_,_) => {}
-                }
-                line.clear();
+        match (cmd, dist) {
+            ("forward", dist) => {
+                x += dist;
             },
-            Err(err) => {
-                return Err(AdventError::Io(err));
-            }
+            ("up", dist) => {
+                y -= dist;
+            },
+            ("down", dist) => {
+                y += dist;
+            },
+            (_,_) => {}
         }
     }
     Ok(x * y)
 }
 
 pub fn solve_part2(inputfile: &str) -> Result<usize, AdventError> {
-    let file = File::open(inputfile).map_err(AdventError::Io)?;
-    let mut reader = BufReader::new(file);
-    let mut line = String::new();
+    let input = load(inputfile).map_err(AdventError::Io)?;
     let (mut x,mut y, mut z) = (0,0,0);
 
-    loop {
-        match reader.read_line(&mut line) {
-            Ok(count) => {
-                if count == 0 {
-                    break;
-                }
-                let cmds: Vec<&str> = line.split(' ').collect();
-                let cmd = cmds[0];
-                let dist = cmds[1].trim().parse::<usize>().map_err(AdventError::Parse)?;
+    for line in input {
+        let cmds: Vec<&str> = line.split(' ').collect();
+        let cmd = cmds[0];
+        let dist = cmds[1].trim().parse::<usize>().map_err(AdventError::Parse)?;
 
-                match (cmd, dist) {
-                    ("forward", dist) => {
-                        x += dist;
-                        y += z * dist;
-                    },
-                    ("up", dist) => {
-                        z -= dist;
-                    },
-                    ("down", dist) => {
-                        z += dist;
-                    },
-                    (_,_) => {}
-                }
-                line.clear();
+        match (cmd, dist) {
+            ("forward", dist) => {
+                x += dist;
+                y += z * dist;
             },
-            Err(err) => {
-                return Err(AdventError::Io(err));
-            }
+            ("up", dist) => {
+                z -= dist;
+            },
+            ("down", dist) => {
+                z += dist;
+            },
+            (_,_) => {}
         }
     }
     Ok(x * y)

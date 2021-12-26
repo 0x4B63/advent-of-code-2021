@@ -1,4 +1,7 @@
-use std::{fs::File, io::{BufReader, BufRead}};
+use std::{
+    fs::File,
+    io::{BufRead, BufReader},
+};
 
 pub fn load(inputfile: &str) -> Result<Vec<String>, std::io::Error> {
     let file = File::open(inputfile)?;
@@ -14,7 +17,7 @@ pub fn load(inputfile: &str) -> Result<Vec<String>, std::io::Error> {
                 }
                 out.push(line.clone());
                 line.clear();
-            },
+            }
             Err(err) => {
                 return Err(err);
             }
