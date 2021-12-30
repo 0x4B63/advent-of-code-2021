@@ -45,7 +45,7 @@ pub fn solve_part2(inputfile: &str) -> Result<usize, AdventError> {
     let mut pattern = String::new();
     let mut pattern2 = String::new();
     let length = input[0].len() - 1;
-    let length2 = input2[0].len() - 1;
+    let length2 = length;
     for i in 0..length {
         pattern += bitstuff(&input, i, false);
         input = reduce(input, &pattern);
