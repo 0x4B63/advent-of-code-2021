@@ -48,7 +48,7 @@ pub fn solve_part2(inputfile: &str) -> Result<usize, AdventError> {
     let length2 = length;
     for i in 0..length {
         pattern += bitstuff(&input, i, false);
-        input = reduce(input, &pattern);
+        input = input.into_iter().filter(|x| x.starts_with(&pattern)).collect();
         if input.len() == 1 {
             break;
         }
@@ -56,7 +56,7 @@ pub fn solve_part2(inputfile: &str) -> Result<usize, AdventError> {
 
     for i in 0..length2 {
         pattern2 += bitstuff(&input2, i, true);
-        input2 = reduce(input2, &pattern2);
+        input2 = input2.into_iter().filter(|x| x.starts_with(&pattern2)).collect();
         if input2.len() == 1 {
             break;
         }
@@ -94,11 +94,4 @@ fn bitstuff(input: &[String], pos: usize, invert: bool) -> &str {
         }
         "0"
     }
-}
-
-fn reduce(input: Vec<String>, pattern: &str) -> Vec<String> {
-    input
-        .into_iter()
-        .filter(|x| x.starts_with(&pattern))
-        .collect()
 }
